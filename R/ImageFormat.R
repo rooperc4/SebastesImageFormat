@@ -91,14 +91,14 @@ ImageFormat<-function(pathFrom=NA,pathTo=NA){
     frinkR<-image_crop(frink,"8064x4032+4032")
     image_write(frinkR, path = paste(pathTo,"/images/WeeViewRight/",formatC(i, width = 4, format = "d", flag = "0"),"_Right.jpg",sep=""), format = "jpg")
     images[k,1]<-i
-    images[k,2]<-cameras$cameras[cameras$label=="right"]
+    images[k,2]<-cameras$camera[cameras$label=="right"]
     images[k,3]<-Sys.time()
     images[k,4]<-paste(formatC(i, width = 4, format = "d", flag = "0"),"_Right.jpg",sep="")
     images[k,5]<-2500
     k<-k+1
     image_write(frinkL, path = paste(pathTo,"/images/WeeViewLeft/",formatC(i, width = 4, format = "d", flag = "0"),"_Left.jpg",sep=""), format = "jpg")
     images[k,1]<-i
-    images[k,2]<-cameras$cameras[cameras$label=="left"]
+    images[k,2]<-cameras$camera[cameras$label=="left"]
     images[k,3]<-Sys.time()
     images[k,4]<-paste(formatC(i, width = 4, format = "d", flag = "0"),"_Left.jpg",sep="")
     images[k,5]<-2500
