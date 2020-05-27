@@ -68,11 +68,13 @@ ImageFormat<-function(pathFrom=NA,pathTo=NA){
   writeLines(c("WeeViewCamera",paste("Number of images = ",length(filesFrom),sep="")), fileConn)
   close(fileConn)
 
-
-  sqliteCopyDatabase(system.file("extdata","Template.db3",package="WeeViewImageFormat"),"./logs/CamTrawlMetadata.db3")
+  con1<-dbConnect(RSQLite::SQLite(),system.file("extdata","Template.db3",package="WeeViewImageFormat"))
+  myConn<-dbConnect(drv=SQLite(),dbname="./logs/CamTrawlMetadata.db3")
+  sqliteCopyDatabase(con1,myConn)
+  dbDisconnect(con1)
 
   async_data<-data.frame(time=character(),sensor_id=character(),header=character(),data=character(),stringsAsFactors=FALSE)
-  cameras<-data.frame(cameras=character(),mac_address=character(),model=character(),label=character(),rotation=character(),stringsAsFactors=FALSE)
+  cameras<-data.frame(camera=character(),mac_address=character(),model=character(),label=character(),rotation=character(),stringsAsFactors=FALSE)
   cameras[1:2,1]<-c("WeeViewRight","WeeViewLeft")
   cameras[1:2,3]<-c("WeeView","WeeView")
   cameras[1:2,4]<-c("right","left")
@@ -114,7 +116,6 @@ ImageFormat<-function(pathFrom=NA,pathTo=NA){
 
   }
 
- myConn<-dbConnect(drv=SQLite(),dbname="./logs/CamTrawlMetadata.db3")
  dbWriteTable(myConn, "async_data", async_data,append=TRUE)
  dbWriteTable(myConn, "cameras",cameras,append=TRUE)
  dbWriteTable(myConn, "deployment_data",deployment_data,append=TRUE)
