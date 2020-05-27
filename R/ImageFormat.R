@@ -49,6 +49,7 @@
 ImageFormat<-function(pathFrom=NA,pathTo=NA){
  require(RSQLite)
   require(magick)
+  #con1<-dbConnect(drv=SQLite(),dbname=system.file("extdata","Template.db3",package="WeeViewImageFormat"))
 
   if(is.na(pathFrom)){pathFrom<-choose.dir(default = "", caption = "Select raw image folder")}
   filesFrom<-list.files(path=pathFrom,pattern="*.JPG",full.names=TRUE)
@@ -56,35 +57,70 @@ ImageFormat<-function(pathFrom=NA,pathTo=NA){
   if(is.na(pathTo)){pathTo<-choose.dir(default = "", caption = "Select processed image folder")}
   setwd(pathTo)
   dir.create("./images")
-  dir.create("./images/Left")
-  dir.create("./images/Right")
+  dir.create("./images/WeeViewLeft")
+  dir.create("./images/WeeViewRight")
   dir.create("./logs")
   dir.create("./settings")
-  fileConn<-file("CamTrawlAcquisition.log")
+  fileConn<-file("./logs/CamTrawlAcquisition.log")
   writeLines(c(format(Sys.time(),"%H:%M:%S"),as.character(Sys.Date()),"WeeViewCamera","Image Splitting"), fileConn)
   close(fileConn)
-  fileConn<-file("ImageLogger2.log")
+  fileConn<-file("./logs/ImageLogger2.log")
   writeLines(c("WeeViewCamera",paste("Number of images = ",length(filesFrom),sep="")), fileConn)
   close(fileConn)
 
+
+  sqliteCopyDatabase(system.file("extdata","Template.db3",package="WeeViewImageFormat"),"./logs/CamTrawlMetadata.db3")
+
+  async_data<-data.frame(time=character(),sensor_id=character(),header=character(),data=character(),stringsAsFactors=FALSE)
+  cameras<-data.frame(cameras=character(),mac_address=character(),model=character(),label=character(),rotation=character(),stringsAsFactors=FALSE)
+  cameras[1:2,1]<-c("WeeViewRight","WeeViewLeft")
+  cameras[1:2,3]<-c("WeeView","WeeView")
+  cameras[1:2,4]<-c("right","left")
+  cameras[1:2,5]<-"none"
+  deployment_data<-data.frame(deployment_parameter="image_extension",parameter_value="jpg",stringsAsFactors=FALSE)
+  dropped<-data.frame(number=integer(),camera=character(),time=character(),stringsAsFactors = FALSE)
+  images<-data.frame(number=integer(),camera=character(),time=character(),name=character(),exposure=integer(),stringsAsFactors = FALSE)
+  sensor_data<-data.frame(number=integer(),sensor_id=character(),header=character(),data=character(),stringsAsFactors = FALSE)
+
+ k<-1
   for(i in 1:length(filesFrom)){
  frink<-image_read(filesFrom[i])
     frinkL<-image_crop(frink,"4032x4032")
     frinkR<-image_crop(frink,"8064x4032+4032")
-    image_write(frinkR, path = paste(pathTo,"/images/Right/",formatC(i, width = 4, format = "d", flag = "0"),"_Right.jpg",sep=""), format = "jpg")
-    image_write(frinkL, path = paste(pathTo,"/images/Left/",formatC(i, width = 4, format = "d", flag = "0"),"_Left.jpg",sep=""), format = "jpg")
+    image_write(frinkR, path = paste(pathTo,"/images/WeeViewRight/",formatC(i, width = 4, format = "d", flag = "0"),"_Right.jpg",sep=""), format = "jpg")
+    images[k,1]<-i
+    images[k,2]<-cameras$cameras[cameras$label=="right"]
+    images[k,3]<-Sys.time()
+    images[k,4]<-paste(formatC(i, width = 4, format = "d", flag = "0"),"_Right.jpg",sep="")
+    images[k,5]<-2500
+    k<-k+1
+    image_write(frinkL, path = paste(pathTo,"/images/WeeViewLeft/",formatC(i, width = 4, format = "d", flag = "0"),"_Left.jpg",sep=""), format = "jpg")
+    images[k,1]<-i
+    images[k,2]<-cameras$cameras[cameras$label=="left"]
+    images[k,3]<-Sys.time()
+    images[k,4]<-paste(formatC(i, width = 4, format = "d", flag = "0"),"_Left.jpg",sep="")
+    images[k,5]<-2500
+    k<-k+1
+
+    async_data[i,1]<-Sys.time()
+    async_data[i,2]<-"Camera"
+    async_data[i,3]<-"$CTCS"
+    async_data[i,4]<-"$CTCS,WeeViewCamera"
+
+    sensor_data[i,1]<-i
+    sensor_data[i,2]<-"CTControl"
+    sensor_data[i,3]<-"$OHPR"
+    sensor_data[i,4]<-"$OHPR,,,,,,,,"
+
   }
 
-async_data<-data.frame(
-  conn <- dbConnect(RSQLite::SQLite(), "CamTrawlMetadata.db3")
-  dbListTables(conn)
-  dbReadTable(conn,"async_data")
-  dbReadTable(conn,"cameras")
-  dbReadTable(conn,"deployment_data")
-  dbReadTable(conn,"dropped")
-  dbReadTable(conn,"images")
-  dbReadTable(conn,"sensor_data")
-dbDisconnect()
+ myConn<-dbConnect(drv=SQLite(),dbname="./logs/CamTrawlMetadata.db3")
+ dbWriteTable(myConn, "async_data", async_data,append=TRUE)
+ dbWriteTable(myConn, "cameras",cameras,append=TRUE)
+ dbWriteTable(myConn, "deployment_data",deployment_data,append=TRUE)
+ dbWriteTable(myConn,"dropped",dropped,append=TRUE)
+ dbWriteTable(myConn, "images",images,append=TRUE)
+ dbWriteTable(myConn, "sensor_data",sensor_data,append=TRUE)
+ dbDisconnect(myConn)
 
 }
-
