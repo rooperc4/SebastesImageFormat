@@ -81,7 +81,7 @@ ImageFormat<-function(pathFrom=NA,pathTo=NA){
   cameras[1:2,5]<-"none"
   deployment_data<-data.frame(deployment_parameter="image_extension",parameter_value="jpg",stringsAsFactors=FALSE)
   dropped<-data.frame(number=integer(),camera=character(),time=character(),stringsAsFactors = FALSE)
-  images<-data.frame(number=integer(),camera=character(),time=character(),name=character(),exposure=integer(),stringsAsFactors = FALSE)
+  images<-data.frame(number=integer(),camera=character(),time=character(),name=character(),exposure_us=integer(),stringsAsFactors = FALSE)
   sensor_data<-data.frame(number=integer(),sensor_id=character(),header=character(),data=character(),stringsAsFactors = FALSE)
 
  k<-1
