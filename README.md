@@ -4,13 +4,12 @@ Format 3d images
 This is code to take the images from a weeview 3d camera, crop them and
 format them for use in Sebastes stereo-image analysis software.
 
-To install the package use the lines below.
+To install the package use the lines below. The function requires the
+“RSQLite” and “magick” packages that can be downloaded and installed
+from the CRAN repository.
 
     devtools::install_github("rooperc4/WeeViewImageFormat")
     library(WeeViewImageFormat)
-    ImageFormat()
-
-    ImageFormat("D:/Weeview/PHOTO","C:/Users/rooperc/Desktop/WeeViewTest")
 
 The package has a single function that can be run using the following
 code. The function prompts the user to point to a folder where the
@@ -27,4 +26,4 @@ file folders are specified. There is limited help documentation as well.
     ImageFormat()
 
     #Example 2: Command line specification of file locations
-    ImageFormat("D:/Weeview/PHOTO","C:/Users/rooperc/Desktop/WeeViewTest")
+    ImageFormat("D:/Weeview/PHOTO","C:/Users/rooperc/Desktop/WeeviewTest")

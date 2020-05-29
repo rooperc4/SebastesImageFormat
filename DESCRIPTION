@@ -1,14 +1,15 @@
 Package: WeeViewImageFormat
-Title: What the Package Does (One Line, Title Case)
+Title: Format Weeview 3d Camera Images From Weeview 3d Camera For Use In SEBASTES Stereo Image Software
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Chris",
+           family = "Rooper",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+           email = "chris.rooper@dfo-mpo.gc.ca",
+           comment = c(ORCID = "0000-0003-2315-1269"))
+Description: This package formats Weeview 3d Camera images for use in SEBASTES stereo-image processing software.
+License: GNU GPLv3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
+Imports: magick,RSQLite
