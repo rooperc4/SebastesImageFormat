@@ -6,8 +6,16 @@ format them for use in Sebastes stereo-image analysis software.
 
 To install the package use the lines below. The function requires the
 “RSQLite” and “magick” packages that can be downloaded and installed
-from the CRAN repository.
+from the CRAN repository. The package also requires the installation of
+the ROpenCVLite and Rvision packages. The installation instructions can
+be found here
+<a href="https://github.com/swarm-lab/ROpenCVLite" class="uri">https://github.com/swarm-lab/ROpenCVLite</a>
+and here
+<a href="https://github.com/swarm-lab/Rvision" class="uri">https://github.com/swarm-lab/Rvision</a>.
+Installing all these things requires the installation of the CRAN
+package “devtools”.
 
+    install.packages("devtools")
     devtools::install_github("rooperc4/WeeViewImageFormat")
     library(WeeViewImageFormat)
 

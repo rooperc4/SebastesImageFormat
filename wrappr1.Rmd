@@ -15,10 +15,12 @@ This is code to take the images from a weeview 3d camera, crop them and format t
 
 
 
-To install the package use the lines below. The function requires the "RSQLite" and "magick" packages that can be downloaded and installed from the CRAN repository.
+To install the package use the lines below. The function requires the "RSQLite" and "magick" packages that can be downloaded and installed from the CRAN repository. The package also requires the installation of the ROpenCVLite and Rvision packages. The installation instructions can be found here https://github.com/swarm-lab/ROpenCVLite and here https://github.com/swarm-lab/Rvision. Installing all these things requires the installation of the CRAN package "devtools".
+
 
 ```{r install library, eval=FALSE}
 
+install.packages("devtools")
 devtools::install_github("rooperc4/WeeViewImageFormat")
 library(WeeViewImageFormat)
 
