@@ -1,5 +1,5 @@
-Package: WeeViewImageFormat
-Title: Format Weeview 3d Camera Images From Weeview 3d Camera For Use In SEBASTES Stereo Image Software
+Package: SebastesImageFormat
+Title: Format 3d Camera Images From Stereo Camera For Use In SEBASTES Stereo Image Software
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Chris",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "chris.rooper@dfo-mpo.gc.ca",
            comment = c(ORCID = "0000-0003-2315-1269"))
-Description: This package formats Weeview 3d Camera images for use in SEBASTES stereo-image processing software.
+Description: This package formats Stereo Camera images for use in SEBASTES stereo-image processing software.
 License: GNU GPLv3
 Encoding: UTF-8
 LazyData: true
