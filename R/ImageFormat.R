@@ -23,12 +23,12 @@
 #' Example 2: Command line specification of file locations
 #' ImageFormat("D:/Weeview/PHOTO","C:/Users/rooperc/Desktop/WeeViewTest")
 
-ImageFormat<-function (pathFrom = NA, pathTo = NA, iformat = "jpg")
+ImageFormat<-function (pathFrom = NULL, pathTo = NULL, iformat = "jpg")
 {
   require(RSQLite)
   require(magick)
 
-  if (is.na(pathFrom)) {
+  if (is.null(pathFrom)) {
     pathFrom <- choose.dir(default = "", caption = "Select raw image folder")
   }
   filesFrom <- list.files(path = pathFrom, pattern = paste0("*.",iformat),
@@ -50,7 +50,7 @@ ImageFormat<-function (pathFrom = NA, pathTo = NA, iformat = "jpg")
 
 
   print(filesFrom)
-  if (is.na(pathTo)) {
+  if (is.null(pathTo)) {
     pathTo <- choose.dir(default = "", caption = "Select processed image folder")
   }
   setwd(pathTo)
