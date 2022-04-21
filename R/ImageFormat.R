@@ -33,8 +33,9 @@ ImageFormat<-function (pathFrom = NULL, pathTo = NULL, iformat = "jpg")
   }
   filesFrom <- list.files(path = pathFrom, pattern = paste0("*.",iformat),
                           full.names = TRUE)
-
-  filesFrom<-filesFrom[-which(file.size(filesFrom)==0)]
+  t1<-which(file.size(filesFrom)==0)
+  if(length(t1>0)){
+  filesFrom<-filesFrom[-t1]}
 
 
 
