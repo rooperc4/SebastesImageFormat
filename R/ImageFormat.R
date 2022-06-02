@@ -33,10 +33,9 @@ ImageFormat<-function (pathFrom = NULL, pathTo = NULL, iformat = "jpg")
   }
   filesFrom <- list.files(path = pathFrom, pattern = paste0("*.",iformat),
                           full.names = TRUE)
-  t1<-which(file.size(filesFrom)==0)
+  t1<-which(file.size(filesFrom)==0|grepl("-preview",filesFrom))
   if(length(t1>0)){
   filesFrom<-filesFrom[-t1]}
-
 
 
   i<-1
