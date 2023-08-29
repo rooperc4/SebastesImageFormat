@@ -27,7 +27,7 @@ ImageFormat<-function (pathFrom = NULL, pathTo = NULL, iformat = "jpg")
 {
   require(RSQLite)
   require(magick)
-pathFrom<-"C:/Users/rooperc/Desktop/Stereo_Image_Applications/GreenCam Calibration"
+#pathFrom<-"C:/Users/rooperc/Desktop/Stereo_Image_Applications/GreenCam Calibration"
   if (is.null(pathFrom)) {
     pathFrom <- choose.dir(default = "", caption = "Select raw image folder")
   }
@@ -39,7 +39,7 @@ pathFrom<-"C:/Users/rooperc/Desktop/Stereo_Image_Applications/GreenCam Calibrati
   filesFrom<-filesFrom[-t1]
   frametimes<-frametimes[-t1]}
 
-  frametimes<-sapply(strsplit(frametimes,iformat),"[",1)
+  frametimes<-sapply(strsplit(frametimes,paste0(".",iformat)),"[",1)
   frametimes<-as.POSIXct(frametimes,tz="UTC",format="%Y-%m-%d_%H-%M-%S")
   frametimes<-data.frame(FRAME_NUMBER=seq(1,length(frametimes),1),Time=frametimes)
 
@@ -139,7 +139,7 @@ pathFrom<-"C:/Users/rooperc/Desktop/Stereo_Image_Applications/GreenCam Calibrati
   dbWriteTable(myConn, "sensor_data", sensor_data, append = TRUE)
   dbDisconnect(myConn)
 
-  write.csv(frametimes,"image_times.csv",row.names=FALSE)
+  write.csv(frametimes,paste0(pathTo,"/image_times.csv"),row.names=FALSE)
 }
 
 
