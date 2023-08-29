@@ -27,7 +27,7 @@ ImageFormat<-function (pathFrom = NULL, pathTo = NULL, iformat = "jpg")
 {
   require(RSQLite)
   require(magick)
-#pathFrom<-"C:/Users/rooperc/Desktop/Stereo_Image_Applications/GreenCam Calibration"
+
   if (is.null(pathFrom)) {
     pathFrom <- choose.dir(default = "", caption = "Select raw image folder")
   }
